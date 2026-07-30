@@ -4,4 +4,4 @@
 
 new version of install script
 
-download install-universal-6.10.sh
+download install-universal-6.11.sh
