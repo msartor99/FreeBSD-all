@@ -4,14 +4,14 @@
 
 New version for Lenovo P620 with compilation of dependencies and drivers for Nvidia Quadro RTX 4000 and Wayland
 
-download new-install-1.sh
+download new-postinstall-1.sh
 
 
 # August 21 2026
 
 New version with compilation of dependencies and drivers for Nvidia Quadro RTX 4000 and Wayland
 
-download new-install-1.sh
+download new-postinstall-1.sh
 
 
 # August 14 2026
