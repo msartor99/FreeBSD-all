@@ -2,8 +2,8 @@
 
 # August 25 2026
 
-New version of the Wayland installation script with Plasma 6 on an Nvidia Quadro RTX 4000 graphics card.
-This script performs updates, fixes compatibility issues, recompiles Nvidia drivers and dependencies.
+New version of the Wayland installation script with Plasma6 for an Nvidia Quadro RTX 4000 graphics card on a Lenovo P620.
+This script performs updates, fixes compatibility issues, recompiles the Nvidia drivers and dependencies.
 
 download new-postinstall-1.sh
 
