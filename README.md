@@ -1,8 +1,9 @@
 # FreeBSD-all
 
-# August 24 2026
+# August 25 2026
 
-New version for Lenovo P620 with compilation of dependencies and drivers for Nvidia Quadro RTX 4000 and Wayland
+New version of the Wayland installation script with Plasma 6 on an Nvidia Quadro RTX 4000 graphics card.
+This script performs updates, fixes compatibility issues, recompiles Nvidia drivers and dependencies.
 
 download new-postinstall-1.sh
 
