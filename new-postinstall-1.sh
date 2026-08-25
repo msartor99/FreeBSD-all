@@ -2,6 +2,7 @@
 # ==============================================================================
 # Script de post-installation complet - Lenovo P620 (ThreadRipper, RTX 4000)
 # Système : FreeBSD 15.1-RELEASE + Wayland + Plasma 6 + Pilote NVIDIA 610
+# Mode : Seamless Boot (Auto-Login) 100% Wayland
 # ==============================================================================
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -74,20 +75,11 @@ for group in wheel operator video; do
 done
 pw usermod root -L french
 
-echo "=== Variables globales Wayland & NVIDIA (.profile) ==="
-for prof in /home/administrateur/.profile /root/.profile; do
-    [ ! -f "$prof" ] && touch "$prof"
-    grep -q "KWIN_FORCE_SW_CURSOR" "$prof" || echo 'export KWIN_FORCE_SW_CURSOR=1' >> "$prof"
-    grep -q "WLR_NO_HARDWARE_CURSORS" "$prof" || echo 'export WLR_NO_HARDWARE_CURSORS=1' >> "$prof"
-    grep -q "QT_QPA_PLATFORM" "$prof" || echo 'export QT_QPA_PLATFORM=wayland' >> "$prof"
-done
-chown administrateur:administrateur /home/administrateur/.profile
-
 echo "=== Utilitaires, Polices et Logiciels ==="
-# Installation préventive de rust et xcb-util-cursor pour sécuriser la compilation future
+# NOTE: sddm a été retiré. Nous utiliserons un démarrage natif.
 pkg install -y doas unzip libzip wget git htop neofetch python3 bashtop ImageMagick7 smartmontools \
     rust xcb-util-cursor cups gutenprint cups-filters hplip system-config-printer \
-    fusefs-ntfs fusefs-ext2 fusefs-hfsfuse xorg dbus avahi signal-cli seatd portmaster sddm \
+    fusefs-ntfs fusefs-ext2 fusefs-hfsfuse xorg dbus avahi signal-cli seatd portmaster \
     pavucontrol kate konsole ark remmina dolphin Kvantum pulseaudio pipewire wireplumber \
     audio/freedesktop-sound-theme firefox vlc ffmpeg libva-vdpau-driver libva-utils libdvdread \
     libdvdnav xdg-user-dirs octopkg multimedia/mpv gstreamer1-plugins-all gstreamer1-libav \
@@ -97,7 +89,12 @@ pkg install -y doas unzip libzip wget git htop neofetch python3 bashtop ImageMag
     x11-themes/qogir-icon-themes x11-themes/win98se-icon-theme
 
 pkg install -y --g "plasma6-*" "kf6*"
-pkg install -y wayland xwayland qt6-wayland
+pkg install -y wayland xwayland qt6-wayland consolekit2
+
+echo "=== Configuration PAM (XDG_RUNTIME_DIR) ==="
+if ! grep -q "pam_xdg.so" /etc/pam.d/system; then
+    echo "session optional pam_xdg.so" >> /etc/pam.d/system
+fi
 
 echo "=== Gestion des périphériques (Devfs, Fstab) ==="
 if ! grep -q "\[localrules=5\]" /etc/devfs.rules 2>/dev/null; then
@@ -132,26 +129,66 @@ sysrc kld_list+="fusefs ext2fs nvidia-modeset nvidia-drm"
 sysrc dbus_enable="YES"
 sysrc avahi_enable="YES"
 sysrc seatd_enable="YES"
-sysrc sddm_enable="YES"
-sysrc sddm_lang="ch_CH"
-sysrc moused_enable="NO" # Crucial pour débloquer la souris sous Wayland
 sysrc sound_load="YES"
 sysrc snd_hda_load="YES"
 
-echo "=== Configuration Xorg (Clavier) ==="
-mkdir -p /usr/local/etc/X11/xorg.conf.d
-cat >/usr/local/etc/X11/xorg.conf.d/20-keyboards.conf <<EOF
-Section "ServerFlags"
-    Option "DontZap" "false"
-EndSection
-Section "InputClass"
-    Identifier "All Keyboards"
-    MatchIsKeyboard "yes"
-    Option "XkbLayout" "ch"
-    Option "XkbVariant" "fr"
-    Option "XkbOptions" "terminate:ctrl_alt_bksp" 
-EndSection
+echo "=== Configuration de la session Wayland Native ==="
+mkdir -p /home/administrateur/.config/environment.d
+cat > /home/administrateur/.config/environment.d/10-nvidia.conf <<EOF
+KWIN_FORCE_SW_CURSOR=1
+WLR_NO_HARDWARE_CURSORS=1
+QT_QPA_PLATFORM=wayland
+LIBSEAT_BACKEND=seatd
 EOF
+chown -R administrateur:administrateur /home/administrateur/.config
+
+# Création du lanceur ultime Plasma
+cat << 'EOF' > /home/administrateur/startplasma.sh
+#!/bin/sh
+# Lancement de KDE Plasma 6 (Wayland) optimisé pour NVIDIA sous FreeBSD
+export KWIN_FORCE_SW_CURSOR=1
+export WLR_NO_HARDWARE_CURSORS=1
+export QT_QPA_PLATFORM=wayland
+export LIBSEAT_BACKEND=seatd
+
+export LANG=fr_CH.UTF-8
+export LC_ALL=fr_CH.UTF-8
+
+export XDG_RUNTIME_DIR=/tmp/xdg-$(id -u)
+rm -rf $XDG_RUNTIME_DIR
+mkdir -p $XDG_RUNTIME_DIR
+chmod 700 $XDG_RUNTIME_DIR
+
+rm -f /tmp/wayland-* 2>/dev/null
+
+exec ck-launch-session dbus-run-session startplasma-wayland
+EOF
+
+chmod +x /home/administrateur/startplasma.sh
+chown administrateur:administrateur /home/administrateur/startplasma.sh
+
+echo "=== Configuration du Démarrage Automatique (Auto-Login) ==="
+# On crée le profil "al.administrateur" pour la connexion automatique
+if ! grep -q "al.administrateur" /etc/gettytab; then
+cat << 'EOF' >> /etc/gettytab
+al.administrateur:\
+	:al=administrateur:tc=Pc:
+EOF
+fi
+
+# On assigne ce profil au terminal ttyv0
+sed -i '' 's|^ttyv0.*|ttyv0	"/usr/libexec/getty al.administrateur"	xterm	on  secure|' /etc/ttys
+
+# On lance Plasma automatiquement lorsque "administrateur" se connecte sur ttyv0
+cat << 'EOF' >> /home/administrateur/.profile
+
+# Lancement Seamless Wayland
+if [ "$(tty)" = "/dev/ttyv0" ]; then
+    sleep 1
+    exec /home/administrateur/startplasma.sh
+fi
+EOF
+chown administrateur:administrateur /home/administrateur/.profile
 
 echo "=== Compilation Hybride (Wayland + NVIDIA Ports) ==="
 [ ! -d /usr/ports/.git ] && git clone --depth 1 https://git.freebsd.org/ports.git /usr/ports
@@ -165,11 +202,9 @@ if [ -f "$FLAG_FILE" ]; then
 else
     echo "-> Début de la compilation ciblée (NVIDIA + Qt6-Wayland)... Patientez."
     
-    # 1. Compilation des pilotes NVIDIA
     cd /usr/ports/x11/nvidia-driver && make BATCH=yes install clean >> "$LOG_FILE" 2>&1
     cd /usr/ports/graphics/nvidia-drm-kmod && make BATCH=yes install clean >> "$LOG_FILE" 2>&1
     
-    # 2. Re-compilation de qt6-wayland (Désinstallation préalable pour éviter l'erreur de version)
     pkg delete -y -f qt6-wayland >/dev/null 2>&1 || true
     cd /usr/ports/graphics/qt6-wayland
     make BATCH=yes CMAKE_ARGS+="-DQT_NO_PACKAGE_VERSION_CHECK=TRUE" install clean >> "$LOG_FILE" 2>&1
@@ -190,21 +225,7 @@ if ! kldstat | grep -q if_atlantic && [ ! -f /boot/modules/if_atlantic.ko ]; the
     fi
 fi
 
-echo "=== SDDM et Splash Screen ==="
-cat > /usr/local/share/sddm/scripts/Xsetup <<EOF
-setxkbmap ch fr
-EOF
-
-mkdir -p /usr/local/etc/sddm.conf.d
-cat > /usr/local/etc/sddm.conf.d/theme.conf <<EOF
-[Theme]
-Current=maldives
-EOF
-cat > /usr/local/etc/sddm.conf <<EOF
-[General]
-InputMethod=""
-EOF
-
+echo "=== Installation du Splash Screen ==="
 if [ ! -f /boot/images/splash.png ]; then
     mkdir -p /boot/images
     cd /tmp
@@ -216,4 +237,5 @@ if [ ! -f /boot/images/splash.png ]; then
     fi
 fi
 
-echo "=== Opération terminée avec succès. Un redémarrage (reboot) est nécessaire. ==="
+echo "=== Opération terminée. Le système est prêt. ==="
+echo "Note : Au redémarrage, le système se connectera automatiquement et lancera Wayland."
