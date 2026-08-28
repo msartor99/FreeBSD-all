@@ -1,5 +1,14 @@
 # FreeBSD-all
 
+# August 28 2026
+
+A new, more comprehensive version that supports the processor type, the graphics card type, and locks the Nvidia driver according to its version and card compatibility if it is older.
+
+download install-universal-6.21.sh
+
+
+
+
 # August 25 2026
 
 New version of the Wayland installation script with Plasma6 for an Nvidia Quadro RTX 4000 graphics card on a Lenovo P620.
