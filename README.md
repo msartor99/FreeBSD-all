@@ -3,7 +3,7 @@
 # August 31 2026
 
 New version of the Wayland installation script with Plasma6 for an Nvidia Quadro RTX 4000 graphics card on a Lenovo P620.
-This script performs updates, fixes compatibility issues, recompiles the Nvidia drivers and dependencies and user sddm new version.
+This script performs updates, fixes compatibility issues, recompiles the Nvidia drivers and dependencies and use sddm new version.
 
 download new-postinstall-2.sh
 
