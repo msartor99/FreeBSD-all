@@ -1,5 +1,10 @@
 # FreeBSD-all
 
+
+# September 2 2026
+
+some adjustement
+
 # August 31 2026
 
 New version of the Wayland installation script with Plasma6 for an Nvidia Quadro RTX 4000 graphics card on a Lenovo P620.
