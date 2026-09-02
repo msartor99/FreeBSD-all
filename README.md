@@ -3,6 +3,7 @@
 
 # September 2 2026
 
+new install-universal-6.24.sh
 some adjustement
 
 # August 31 2026
