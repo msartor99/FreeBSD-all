@@ -2,6 +2,8 @@
 
 # September 8 2026
 
+new install-universal-6.30.sh
+
 some patch for amd driver, sddm and walyand
 
 
