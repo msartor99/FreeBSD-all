@@ -1,5 +1,9 @@
 # FreeBSD-all
 
+# September 8 2026
+
+some patch for amd driver, sddm and walyand
+
 
 # September 2 2026
 
