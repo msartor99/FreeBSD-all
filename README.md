@@ -4,7 +4,7 @@
 
 new install-universal-6.31.sh
 
-added Gerswin Desktop installation
+added Gershwin Desktop installation
 
 # September 8 2026
 
