@@ -1,5 +1,11 @@
 # FreeBSD-all
 
+# September 12 2026
+
+new install-universal-6.31.sh
+
+added Gerswin Desktop installation
+
 # September 8 2026
 
 new install-universal-6.30.sh
