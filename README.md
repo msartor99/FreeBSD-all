@@ -2,9 +2,9 @@
 
 # September 18 2026
 
-new install-universal-no-wayland-8.0.sh
+new install-universal-no-wayland-8.1.sh
 
-remove wayland installation
+remove wayland installation and add chromium for MS Teams and Office365
 
 # September 12 2026
 
