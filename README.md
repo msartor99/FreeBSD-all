@@ -1,5 +1,11 @@
 # FreeBSD-all
 
+# September 18 2026
+
+new install-universal-no-wayland-8.0.sh
+
+remove wayland installation
+
 # September 12 2026
 
 new install-universal-6.31.sh
