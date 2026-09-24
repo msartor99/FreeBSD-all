@@ -1,10 +1,9 @@
 # FreeBSD-all
 
-# September 18 2026
+# September 24 2026
 
-new install-universal-no-wayland-8.1.sh
+new install-universal-6.51.sh
 
-remove wayland installation and add chromium for MS Teams and Office365
 
 # September 12 2026
 
