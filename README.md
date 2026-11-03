@@ -2,7 +2,7 @@
 
 # novembre 3 2026
 
-new script , desktop-install.9.4.sh, complete overhaul of the post-installation script
+new script , desktop-install.9.5.sh, complete overhaul of the post-installation script
 
 
 # September 24 2026
