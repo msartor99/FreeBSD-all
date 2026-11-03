@@ -1,5 +1,10 @@
 # FreeBSD-all
 
+# novembre 3 2026
+
+new script , desktop-install.9.4.sh, complete refining
+
+
 # September 24 2026
 
 new install-universal-6.51.sh
