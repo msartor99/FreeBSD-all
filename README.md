@@ -1,6 +1,6 @@
 # FreeBSD-all
 
-# november 92026
+# november 9 2026
 
 New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p5.
 
