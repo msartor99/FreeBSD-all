@@ -1,5 +1,11 @@
 # FreeBSD-all
 
+# november 92026
+
+New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p5.
+
+install-workstation-v5.5.sh
+
 # novembre 3 2026
 
 new script , desktop-install.9.5.sh, complete overhaul of the post-installation script
