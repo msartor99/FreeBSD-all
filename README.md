@@ -4,7 +4,7 @@
 
 New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p5.
 
-install-workstation-v5.5.sh
+install-workstation-v9.6.sh
 
 # novembre 3 2026
 
