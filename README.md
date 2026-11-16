@@ -12,7 +12,7 @@ install-desktop.sh
 
 New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p6.
 
-install-workstation-v10.2.sh
+install-workstation-v11.sh
 
 #
 # november 9 2026
