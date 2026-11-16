@@ -1,5 +1,13 @@
 # FreeBSD-all
 
+# november 16 2026
+
+new script to installa and configure GNOME
+
+install-gnome.sh
+
+
+
 # november 11 2026
 
 New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p6.
