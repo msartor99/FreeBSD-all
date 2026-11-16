@@ -8,7 +8,7 @@ simple desktop installation script
 install-desktop.sh
 
 
-# november 11 2026
+# november 16 2026
 
 New version of the script with bug fixes for Nvidia drivers, for FreeBSD 15.1 p6.
 
