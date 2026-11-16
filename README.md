@@ -1,11 +1,5 @@
 # FreeBSD-all
 
-# november 16 2026
-
-new script to install and configure GNOME
-
-install-gnome.sh
-
 
 
 # november 11 2026
