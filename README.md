@@ -1,6 +1,12 @@
 # FreeBSD-all
 
 
+# november 16 2026
+
+simple desktop installation script
+
+install-desktop.sh
+
 
 # november 11 2026
 
