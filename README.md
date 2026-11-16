@@ -2,7 +2,7 @@
 
 # november 16 2026
 
-new script to installa and configure GNOME
+new script to install and configure GNOME
 
 install-gnome.sh
 
